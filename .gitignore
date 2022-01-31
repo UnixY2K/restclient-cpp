@@ -44,3 +44,6 @@ arm-poky-linux-gnueabi-libtool
 # meson builddir
 builddir/
 compile_commands.json
+
+#vscode clangd
+.cache/
