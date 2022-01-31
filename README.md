@@ -5,6 +5,7 @@
 [![doxygen](https://img.shields.io/badge/doxygen-reference-blue.svg)](http://code.mrtazz.com/restclient-cpp/ref/)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
+Meson fork of [restclient-cpp](https://github.com/mrtazz/restclient-cpp)
 
 ## About
 This is a simple REST client for C++. It wraps [libcurl][] for HTTP requests.
