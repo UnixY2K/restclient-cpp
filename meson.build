@@ -41,7 +41,7 @@ if get_option('build_tests')
                     fallback: ['jsoncpp', 'jsoncpp_dep'],
                     required: false)
 else
-    message('Skipping tests dependencies')
+    message('[restclient-cpp] Skipping tests dependencies')
 endif
 
 
@@ -66,7 +66,7 @@ restclient_cpp_dep = declare_dependency(
 if get_option('build_tests')
     subdir('test')
 else
-    message('Skipping tests')
+    message('[restclient-cpp] Skipping tests')
 endif
 
 
