@@ -1,3 +1,13 @@
+###################################################################
+###                                                             ###
+### file:       restclient-cpp/meson.build                      ###
+### brief:      library meson build file                        ###    
+### version:    0.5.2-meson                                     ###
+### licence:    see accompanying LICENSE file [MIT]             ###
+### copyright:  Jonathan Guzmán <jonguz5@hotmail.com>  2022.    ###
+### date:       31/01/2021                                      ###
+###                                                             ###
+###################################################################
 
 restclient_cpp_inc = include_directories('include')
 

@@ -1,3 +1,14 @@
+###################################################################
+###                                                             ###
+### file:       meson.build                                     ###
+### brief:      root meson build file                           ###    
+### version:    0.5.2-meson                                     ###
+### licence:    see accompanying LICENSE file [MIT]             ###
+### copyright:  Jonathan Guzmán <jonguz5@hotmail.com>  2022.    ###
+### date:       31/01/2021                                      ###
+###                                                             ###
+###################################################################
+
 project('restclient-cpp',
   'cpp',
   default_options : [

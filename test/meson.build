@@ -1,3 +1,13 @@
+###################################################################
+###                                                             ###
+### file:       test/meson.build                                ###
+### brief:      test meson build file                           ###    
+### version:    0.5.2-meson                                     ###
+### licence:    see accompanying LICENSE file [MIT]             ###
+### copyright:  Jonathan Guzmán <jonguz5@hotmail.com>  2022.    ###
+### date:       31/01/2021                                      ###
+###                                                             ###
+###################################################################
 
 restclient_cpp_tests_srcs = [
     'test_connection.cc',
