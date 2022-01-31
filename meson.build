@@ -18,20 +18,27 @@ restclient_cpp_libversion = restclient_cpp_version
 
 ## dependencies
 
-### Google Test
-gtest_dep = dependency(
-                'gtest',
-                fallback: ['gtest', 'gtest_dep']
-)
+if get_option('build_tests')
+    ### Google Test
+    gtest_dep = dependency(
+                    'gtest',
+                    fallback: ['gtest', 'gtest_dep']
+    )
+    ### - jsoncpp
+    jsoncpp_dep = dependency(
+                    'jsoncpp',
+                    fallback: ['jsoncpp', 'jsoncpp_dep'],
+                    required: false)
+else
+    message('Skipping tests dependencies')
+endif
+
+
 ### - threads
 threads_dep = dependency('threads')
 ### - CURL
 curl_dep = dependency('libcurl', version : '>= 7.81.0')
-### - jsoncpp
-jsoncpp_dep = dependency(
-                'jsoncpp',
-                fallback: ['jsoncpp', 'jsoncpp_dep'],
-                required: false)
+
 
 
 ## restclient-cpp dependency
@@ -44,7 +51,13 @@ restclient_cpp_dep = declare_dependency(
     include_directories: restclient_cpp_inc
 )
 
-subdir('test')
+
+if get_option('build_tests')
+    subdir('test')
+else
+    message('Skipping tests')
+endif
+
 
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(restclient_cpp_lib,
