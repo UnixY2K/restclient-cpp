@@ -1,4 +1,3 @@
-#include "nlohmann/json_fwd.hpp"
 #include "restclient-cpp/restclient.h"
 #include <gtest/gtest.h>
 #include <string>
