@@ -9,6 +9,8 @@
 #ifndef INCLUDE_RESTCLIENT_CPP_RESTCLIENT_H_
 #define INCLUDE_RESTCLIENT_CPP_RESTCLIENT_H_
 
+#include "restclient-cpp/private/exportAPI.hpp"
+
 #include <string>
 #include <map>
 #include <cstdlib>
@@ -41,27 +43,27 @@ typedef struct {
 } Response;
 
 // init and disable functions
-int init();
-void disable();
+restclient_cppAPI int  init();
+restclient_cppAPI void disable();
 
 /**
   * public methods for the simple API. These don't allow a lot of
   * configuration but are meant for simple HTTP calls.
   *
   */
-Response get(const std::string& url);
-Response post(const std::string& url,
+restclient_cppAPI Response get(const std::string& url);
+restclient_cppAPI Response post(const std::string& url,
               const std::string& content_type,
               const std::string& data);
-Response put(const std::string& url,
+restclient_cppAPI Response put(const std::string& url,
               const std::string& content_type,
               const std::string& data);
-Response patch(const std::string& url,
+restclient_cppAPI Response patch(const std::string& url,
               const std::string& content_type,
               const std::string& data);
-Response del(const std::string& url);
-Response head(const std::string& url);
-Response options(const std::string& url);
+restclient_cppAPI Response del(const std::string& url);
+restclient_cppAPI Response head(const std::string& url);
+restclient_cppAPI Response options(const std::string& url);
 
 }  // namespace RestClient
 

@@ -3,20 +3,21 @@
  * @brief implementation of the connection class
  * @author Daniel Schauenberg <d@unwiredcouch.com>
  */
-
+ 
+#define restclient_cppLIBRARY_EXPORT
 #include "restclient-cpp/connection.h"
 
 #include <curl/curl.h>
 
 #include <cstring>
-#include <string>
 #include <iostream>
 #include <map>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
-#include "restclient-cpp/restclient.h"
 #include "restclient-cpp/helpers.h"
+#include "restclient-cpp/restclient.h"
 #include "restclient-cpp/version.h"
 
 /**
@@ -25,8 +26,8 @@
  * @param baseUrl - base URL for the connection to use
  *
  */
-RestClient::Connection::Connection(const std::string& baseUrl)
-                               : headerFields(), lastRequest() {
+restclient_cppAPI RestClient::Connection::Connection(const std::string &baseUrl)
+    : headerFields(), lastRequest() {
   this->curlHandle = curl_easy_init();
   if (!this->curlHandle) {
     throw std::runtime_error("Couldn't initialize curl handle");
@@ -38,7 +39,7 @@ RestClient::Connection::Connection(const std::string& baseUrl)
   this->noSignal = false;
 }
 
-RestClient::Connection::~Connection() {
+restclient_cppAPI RestClient::Connection::~Connection() {
   if (this->curlHandle) {
     curl_easy_cleanup(this->curlHandle);
   }
@@ -51,7 +52,7 @@ RestClient::Connection::~Connection() {
  *
  * @return RestClient::Connection::Info struct
  */
-RestClient::Connection::Info
+restclient_cppAPI RestClient::Connection::Info
 RestClient::Connection::GetInfo() {
   RestClient::Connection::Info ret;
   ret.baseUrl = this->baseUrl;
@@ -83,9 +84,9 @@ RestClient::Connection::GetInfo() {
  * @param value for the header field
  *
  */
-void
-RestClient::Connection::AppendHeader(const std::string& key,
-                                     const std::string& value) {
+restclient_cppAPI void
+RestClient::Connection::AppendHeader(const std::string &key,
+                                     const std::string &value) {
   this->headerFields[key] = value;
 }
 
@@ -96,7 +97,7 @@ RestClient::Connection::AppendHeader(const std::string& key,
  *
  * @param headers to set
  */
-void
+restclient_cppAPI void
 RestClient::Connection::SetHeaders(RestClient::HeaderFields headers) {
 #if __cplusplus >= 201103L
   this->headerFields = std::move(headers);
@@ -110,7 +111,7 @@ RestClient::Connection::SetHeaders(RestClient::HeaderFields headers) {
  *
  * @returns a RestClient::HeaderFields map containing the custom headers
  */
-RestClient::HeaderFields
+restclient_cppAPI RestClient::HeaderFields
 RestClient::Connection::GetHeaders() {
   return this->headerFields;
 }
@@ -119,9 +120,10 @@ RestClient::Connection::GetHeaders() {
  * @brief configure whether to follow redirects on this connection
  *
  * @param follow - boolean whether to follow redirects
- * @param maxRedirects - int indicating the maximum number of redirect to follow (-1 unlimited, default)
+ * @param maxRedirects - int indicating the maximum number of redirect to follow
+ * (-1 unlimited, default)
  */
-void
+restclient_cppAPI void
 RestClient::Connection::FollowRedirects(bool follow, int maxRedirects) {
   this->followRedirects = follow;
   this->maxRedirects = maxRedirects;
@@ -134,8 +136,8 @@ RestClient::Connection::FollowRedirects(bool follow, int maxRedirects) {
  * @param userAgent - custom userAgent prefix
  *
  */
-void
-RestClient::Connection::SetUserAgent(const std::string& userAgent) {
+restclient_cppAPI void
+RestClient::Connection::SetUserAgent(const std::string &userAgent) {
   this->customUserAgent = userAgent;
 }
 
@@ -146,8 +148,8 @@ RestClient::Connection::SetUserAgent(const std::string& userAgent) {
  * verify the peer with. See CURLOPT_CAINFO
  *
  */
-void
-RestClient::Connection::SetCAInfoFilePath(const std::string& caInfoFilePath) {
+restclient_cppAPI void
+RestClient::Connection::SetCAInfoFilePath(const std::string &caInfoFilePath) {
   this->caInfoFilePath = caInfoFilePath;
 }
 
@@ -156,8 +158,7 @@ RestClient::Connection::SetCAInfoFilePath(const std::string& caInfoFilePath) {
  *
  * @return user agent as std::string
  */
-std::string
-RestClient::Connection::GetUserAgent() {
+restclient_cppAPI std::string RestClient::Connection::GetUserAgent() {
   std::string prefix;
   if (this->customUserAgent.length() > 0) {
     prefix = this->customUserAgent + " ";
@@ -171,8 +172,7 @@ RestClient::Connection::GetUserAgent() {
  * @param seconds - timeout in seconds
  *
  */
-void
-RestClient::Connection::SetTimeout(int seconds) {
+restclient_cppAPI void RestClient::Connection::SetTimeout(int seconds) {
   this->timeout = seconds;
 }
 
@@ -183,8 +183,7 @@ RestClient::Connection::SetTimeout(int seconds) {
  * @param no - set to true switches signals off
  *
  */
-void
-RestClient::Connection::SetNoSignal(bool no) {
+restclient_cppAPI void RestClient::Connection::SetNoSignal(bool no) {
   this->noSignal = no;
 }
 
@@ -195,9 +194,9 @@ RestClient::Connection::SetNoSignal(bool no) {
  * @param password
  *
  */
-void
-RestClient::Connection::SetBasicAuth(const std::string& username,
-                                     const std::string& password) {
+restclient_cppAPI void
+RestClient::Connection::SetBasicAuth(const std::string &username,
+                                     const std::string &password) {
   this->basicAuth.username = username;
   this->basicAuth.password = password;
 }
@@ -208,8 +207,8 @@ RestClient::Connection::SetBasicAuth(const std::string& username,
  * @param path to certificate file
  *
  */
-void
-RestClient::Connection::SetCertPath(const std::string& cert) {
+restclient_cppAPI void
+RestClient::Connection::SetCertPath(const std::string &cert) {
   this->certPath = cert;
 }
 
@@ -219,8 +218,8 @@ RestClient::Connection::SetCertPath(const std::string& cert) {
  * @param certificate type (e.g. "PEM" or "DER")
  *
  */
-void
-RestClient::Connection::SetCertType(const std::string& certType) {
+restclient_cppAPI void
+RestClient::Connection::SetCertType(const std::string &certType) {
   this->certType = certType;
 }
 
@@ -230,8 +229,8 @@ RestClient::Connection::SetCertType(const std::string& certType) {
  * @param path to key file
  *
  */
-void
-RestClient::Connection::SetKeyPath(const std::string& keyPath) {
+restclient_cppAPI void
+RestClient::Connection::SetKeyPath(const std::string &keyPath) {
   this->keyPath = keyPath;
 }
 
@@ -241,8 +240,8 @@ RestClient::Connection::SetKeyPath(const std::string& keyPath) {
  * @param key password
  *
  */
-void
-RestClient::Connection::SetKeyPassword(const std::string& keyPassword) {
+restclient_cppAPI void
+RestClient::Connection::SetKeyPassword(const std::string &keyPassword) {
   this->keyPassword = keyPassword;
 }
 
@@ -252,12 +251,12 @@ RestClient::Connection::SetKeyPassword(const std::string& keyPassword) {
  * @param proxy address with port number
  *
  */
-void
-RestClient::Connection::SetProxy(const std::string& uriProxy) {
+restclient_cppAPI void
+RestClient::Connection::SetProxy(const std::string &uriProxy) {
   std::string uriProxyUpper = uriProxy;
   // check if the provided address is prefixed with "http"
   std::transform(uriProxyUpper.begin(), uriProxyUpper.end(),
-    uriProxyUpper.begin(), ::toupper);
+                 uriProxyUpper.begin(), ::toupper);
 
   if ((uriProxy.length() > 0) && (uriProxyUpper.compare(0, 4, "HTTP") != 0)) {
     this->uriProxy = "http://" + uriProxy;
@@ -273,11 +272,10 @@ RestClient::Connection::SetProxy(const std::string& uriProxy) {
  * @param unixSocketPath - path to Unix socket (ex: /var/run/docker.sock)
  *
  */
-void
-RestClient::Connection::SetUnixSocketPath(const std::string& unixSocketPath) {
+restclient_cppAPI void
+RestClient::Connection::SetUnixSocketPath(const std::string &unixSocketPath) {
   this->unixSocketPath = unixSocketPath;
 }
-
 
 /**
  * @brief helper function to get called from the actual request methods to
@@ -293,14 +291,14 @@ RestClient::Connection::SetUnixSocketPath(const std::string& unixSocketPath) {
  * @return 0 on success and 1 on error
  */
 RestClient::Response
-RestClient::Connection::performCurlRequest(const std::string& uri) {
+RestClient::Connection::performCurlRequest(const std::string &uri) {
   // init return type
   RestClient::Response ret = {};
 
   std::string url = std::string(this->baseUrl + uri);
   std::string headerString;
   CURLcode res = CURLE_OK;
-  curl_slist* headerList = NULL;
+  curl_slist *headerList = NULL;
 
   /** set query URL */
   curl_easy_setopt(this->curlHandle, CURLOPT_URL, url.c_str());
@@ -316,19 +314,18 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
   curl_easy_setopt(this->curlHandle, CURLOPT_HEADERDATA, &ret);
   /** set http headers */
   for (HeaderFields::const_iterator it = this->headerFields.begin();
-      it != this->headerFields.end(); ++it) {
+       it != this->headerFields.end(); ++it) {
     headerString = it->first;
     headerString += ": ";
     headerString += it->second;
     headerList = curl_slist_append(headerList, headerString.c_str());
   }
-  curl_easy_setopt(this->curlHandle, CURLOPT_HTTPHEADER,
-      headerList);
+  curl_easy_setopt(this->curlHandle, CURLOPT_HTTPHEADER, headerList);
 
   // set basic auth if configured
   if (this->basicAuth.username.length() > 0) {
-    std::string authString = std::string(this->basicAuth.username + ":" +
-                                         this->basicAuth.password);
+    std::string authString =
+        std::string(this->basicAuth.username + ":" + this->basicAuth.password);
     curl_easy_setopt(this->curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_easy_setopt(this->curlHandle, CURLOPT_USERPWD, authString.c_str());
   }
@@ -362,8 +359,7 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
 
   // set cert file path
   if (!this->certPath.empty()) {
-    curl_easy_setopt(this->curlHandle, CURLOPT_SSLCERT,
-                     this->certPath.c_str());
+    curl_easy_setopt(this->curlHandle, CURLOPT_SSLCERT, this->certPath.c_str());
   }
 
   // set cert type
@@ -373,8 +369,7 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
   }
   // set key file path
   if (!this->keyPath.empty()) {
-    curl_easy_setopt(this->curlHandle, CURLOPT_SSLKEY,
-                     this->keyPath.c_str());
+    curl_easy_setopt(this->curlHandle, CURLOPT_SSLKEY, this->keyPath.c_str());
   }
   // set key password
   if (!this->keyPassword.empty()) {
@@ -384,10 +379,8 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
 
   // set web proxy address
   if (!this->uriProxy.empty()) {
-    curl_easy_setopt(this->curlHandle, CURLOPT_PROXY,
-                     uriProxy.c_str());
-    curl_easy_setopt(this->curlHandle, CURLOPT_HTTPPROXYTUNNEL,
-                     1L);
+    curl_easy_setopt(this->curlHandle, CURLOPT_PROXY, uriProxy.c_str());
+    curl_easy_setopt(this->curlHandle, CURLOPT_HTTPPROXYTUNNEL, 1L);
   }
 
   // set Unix socket path, if requested
@@ -399,17 +392,17 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
   res = curl_easy_perform(this->curlHandle);
   if (res != CURLE_OK) {
     switch (res) {
-      case CURLE_OPERATION_TIMEDOUT:
-        ret.code = res;
-        ret.body = "Operation Timeout.";
-        break;
-      case CURLE_SSL_CERTPROBLEM:
-        ret.code = res;
-        ret.body = curl_easy_strerror(res);
-        break;
-      default:
-        ret.body = "Failed to query.";
-        ret.code = -1;
+    case CURLE_OPERATION_TIMEDOUT:
+      ret.code = res;
+      ret.body = "Operation Timeout.";
+      break;
+    case CURLE_SSL_CERTPROBLEM:
+      ret.code = res;
+      ret.body = curl_easy_strerror(res);
+      break;
+    default:
+      ret.body = "Failed to query.";
+      ret.code = -1;
     }
   } else {
     int64_t http_code = 0;
@@ -447,8 +440,7 @@ RestClient::Connection::performCurlRequest(const std::string& uri) {
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::get(const std::string& url) {
+RestClient::Response RestClient::Connection::get(const std::string &url) {
   return this->performCurlRequest(url);
 }
 /**
@@ -459,9 +451,8 @@ RestClient::Connection::get(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::post(const std::string& url,
-                             const std::string& data) {
+RestClient::Response RestClient::Connection::post(const std::string &url,
+                                                  const std::string &data) {
   /** Now specify we want to POST data */
   curl_easy_setopt(this->curlHandle, CURLOPT_POST, 1L);
   /** set post fields */
@@ -478,9 +469,8 @@ RestClient::Connection::post(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::put(const std::string& url,
-                            const std::string& data) {
+RestClient::Response RestClient::Connection::put(const std::string &url,
+                                                 const std::string &data) {
   /** initialize upload object */
   RestClient::Helpers::UploadObject up_obj;
   up_obj.data = data.c_str();
@@ -496,7 +486,7 @@ RestClient::Connection::put(const std::string& url,
   curl_easy_setopt(this->curlHandle, CURLOPT_READDATA, &up_obj);
   /** set data size */
   curl_easy_setopt(this->curlHandle, CURLOPT_INFILESIZE,
-                     static_cast<int64_t>(up_obj.length));
+                   static_cast<int64_t>(up_obj.length));
 
   return this->performCurlRequest(url);
 }
@@ -508,16 +498,15 @@ RestClient::Connection::put(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::patch(const std::string& url,
-                            const std::string& data) {
+RestClient::Response RestClient::Connection::patch(const std::string &url,
+                                                   const std::string &data) {
   /** initialize upload object */
   RestClient::Helpers::UploadObject up_obj;
   up_obj.data = data.c_str();
   up_obj.length = data.size();
 
   /** we want HTTP PATCH */
-  const char* http_patch = "PATCH";
+  const char *http_patch = "PATCH";
 
   /** set HTTP PATCH METHOD */
   curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_patch);
@@ -529,7 +518,7 @@ RestClient::Connection::patch(const std::string& url,
   curl_easy_setopt(this->curlHandle, CURLOPT_READDATA, &up_obj);
   /** set data size */
   curl_easy_setopt(this->curlHandle, CURLOPT_INFILESIZE,
-                     static_cast<int64_t>(up_obj.length));
+                   static_cast<int64_t>(up_obj.length));
 
   return this->performCurlRequest(url);
 }
@@ -540,10 +529,9 @@ RestClient::Connection::patch(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::del(const std::string& url) {
+RestClient::Response RestClient::Connection::del(const std::string &url) {
   /** we want HTTP DELETE */
-  const char* http_delete = "DELETE";
+  const char *http_delete = "DELETE";
 
   /** set HTTP DELETE METHOD */
   curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_delete);
@@ -558,16 +546,15 @@ RestClient::Connection::del(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::head(const std::string& url) {
-    /** we want HTTP HEAD */
-    const char* http_head = "HEAD";
+RestClient::Response RestClient::Connection::head(const std::string &url) {
+  /** we want HTTP HEAD */
+  const char *http_head = "HEAD";
 
-    /** set HTTP HEAD METHOD */
-    curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_head);
-    curl_easy_setopt(this->curlHandle, CURLOPT_NOBODY, 1L);
+  /** set HTTP HEAD METHOD */
+  curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_head);
+  curl_easy_setopt(this->curlHandle, CURLOPT_NOBODY, 1L);
 
-    return this->performCurlRequest(url);
+  return this->performCurlRequest(url);
 }
 
 /**
@@ -577,14 +564,13 @@ RestClient::Connection::head(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response
-RestClient::Connection::options(const std::string& url) {
-    /** we want HTTP OPTIONS */
-    const char* http_options = "OPTIONS";
+RestClient::Response RestClient::Connection::options(const std::string &url) {
+  /** we want HTTP OPTIONS */
+  const char *http_options = "OPTIONS";
 
-    /** set HTTP HEAD METHOD */
-    curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_options);
-    curl_easy_setopt(this->curlHandle, CURLOPT_NOBODY, 1L);
+  /** set HTTP HEAD METHOD */
+  curl_easy_setopt(this->curlHandle, CURLOPT_CUSTOMREQUEST, http_options);
+  curl_easy_setopt(this->curlHandle, CURLOPT_NOBODY, 1L);
 
-    return this->performCurlRequest(url);
+  return this->performCurlRequest(url);
 }

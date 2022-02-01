@@ -16,6 +16,7 @@
 
 #include "restclient-cpp/restclient.h"
 #include "restclient-cpp/version.h"
+#include "restclient-cpp/private/exportAPI.hpp"
 
 /**
  * @brief namespace for all RestClient definitions
@@ -125,76 +126,76 @@ class Connection {
     } Info;
 
 
-    explicit Connection(const std::string& baseUrl);
-    ~Connection();
+    restclient_cppAPI explicit Connection(const std::string& baseUrl);
+    restclient_cppAPI ~Connection();
 
     // Instance configuration methods
     // configure basic auth
-    void SetBasicAuth(const std::string& username,
+    restclient_cppAPI void SetBasicAuth(const std::string& username,
                       const std::string& password);
 
     // set connection timeout to seconds
-    void SetTimeout(int seconds);
+    restclient_cppAPI void SetTimeout(int seconds);
 
     // set to not use signals
-    void SetNoSignal(bool no);
+    restclient_cppAPI void SetNoSignal(bool no);
 
     // set whether to follow redirects, maxRedirects indicitng the maximum
     // number of redirects to follow
-    void FollowRedirects(bool follow, int maxRedirects = -1l);
+    restclient_cppAPI void FollowRedirects(bool follow, int maxRedirects = -1l);
 
     // set custom user agent
     // (this will result in the UA "foo/cool restclient-cpp/VERSION")
-    void SetUserAgent(const std::string& userAgent);
+    restclient_cppAPI void SetUserAgent(const std::string& userAgent);
 
     // set the Certificate Authority (CA) Info which is the path to file holding
     // certificates to be used to verify peers. See CURLOPT_CAINFO
-    void SetCAInfoFilePath(const std::string& caInfoFilePath);
+    restclient_cppAPI void SetCAInfoFilePath(const std::string& caInfoFilePath);
 
     // set CURLOPT_SSLCERT
-    void SetCertPath(const std::string& cert);
+    restclient_cppAPI void SetCertPath(const std::string& cert);
 
     // set CURLOPT_SSLCERTTYPE
-    void SetCertType(const std::string& type);
+    restclient_cppAPI void SetCertType(const std::string& type);
 
     // set CURLOPT_SSLKEY. Default format is PEM
-    void SetKeyPath(const std::string& keyPath);
+    restclient_cppAPI void SetKeyPath(const std::string& keyPath);
 
     // set CURLOPT_KEYPASSWD.
-    void SetKeyPassword(const std::string& keyPassword);
+    restclient_cppAPI void SetKeyPassword(const std::string& keyPassword);
 
     // set CURLOPT_PROXY
-    void SetProxy(const std::string& uriProxy);
+    restclient_cppAPI void SetProxy(const std::string& uriProxy);
 
     // set CURLOPT_UNIX_SOCKET_PATH
-    void SetUnixSocketPath(const std::string& unixSocketPath);
+    restclient_cppAPI void SetUnixSocketPath(const std::string& unixSocketPath);
 
-    std::string GetUserAgent();
+    restclient_cppAPI std::string GetUserAgent();
 
-    RestClient::Connection::Info GetInfo();
+    restclient_cppAPI RestClient::Connection::Info GetInfo();
 
     // set headers
-    void SetHeaders(RestClient::HeaderFields headers);
+    restclient_cppAPI void SetHeaders(RestClient::HeaderFields headers);
 
     // get headers
-    RestClient::HeaderFields GetHeaders();
+    restclient_cppAPI RestClient::HeaderFields GetHeaders();
 
     // append additional headers
-    void AppendHeader(const std::string& key,
+    restclient_cppAPI void AppendHeader(const std::string& key,
                       const std::string& value);
 
 
     // Basic HTTP verb methods
-    RestClient::Response get(const std::string& uri);
-    RestClient::Response post(const std::string& uri,
+    restclient_cppAPI RestClient::Response get(const std::string& uri);
+    restclient_cppAPI RestClient::Response post(const std::string& uri,
                               const std::string& data);
-    RestClient::Response put(const std::string& uri,
+    restclient_cppAPI RestClient::Response put(const std::string& uri,
                              const std::string& data);
-    RestClient::Response patch(const std::string& uri,
+    restclient_cppAPI RestClient::Response patch(const std::string& uri,
                              const std::string& data);
-    RestClient::Response del(const std::string& uri);
-    RestClient::Response head(const std::string& uri);
-    RestClient::Response options(const std::string& uri);
+    restclient_cppAPI RestClient::Response del(const std::string& uri);
+    restclient_cppAPI RestClient::Response head(const std::string& uri);
+    restclient_cppAPI RestClient::Response options(const std::string& uri);
 
  private:
     CURL* curlHandle;

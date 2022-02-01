@@ -11,6 +11,7 @@
  * @author Daniel Schauenberg <d@unwiredcouch.com>
  */
 
+#define restclient_cppLIBRARY_EXPORT
 #include "restclient-cpp/restclient.h"
 
 #include <curl/curl.h>
@@ -24,7 +25,7 @@
 /**
  * @brief global init function. Call this before you start any threads.
  */
-int RestClient::init() {
+restclient_cppAPI int RestClient::init() {
   CURLcode res = curl_global_init(CURL_GLOBAL_ALL);
   if (res == CURLE_OK) {
     return 0;
@@ -37,7 +38,7 @@ int RestClient::init() {
  * @brief global disable function. Call this before you terminate your
  * program.
  */
-void RestClient::disable() {
+restclient_cppAPI void RestClient::disable() {
   curl_global_cleanup();
 }
 
@@ -48,7 +49,7 @@ void RestClient::disable() {
  *
  * @return response struct
  */
-RestClient::Response RestClient::get(const std::string& url) {
+restclient_cppAPI RestClient::Response RestClient::get(const std::string& url) {
 #if __cplusplus >= 201402L
   auto conn = std::make_unique<RestClient::Connection>("");
   return conn->get(url);
@@ -70,7 +71,7 @@ RestClient::Response RestClient::get(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response RestClient::post(const std::string& url,
+restclient_cppAPI RestClient::Response RestClient::post(const std::string& url,
                                       const std::string& ctype,
                                       const std::string& data) {
 #if __cplusplus >= 201402L
@@ -96,7 +97,7 @@ RestClient::Response RestClient::post(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response RestClient::put(const std::string& url,
+restclient_cppAPI RestClient::Response RestClient::put(const std::string& url,
                                      const std::string& ctype,
                                      const std::string& data) {
 #if __cplusplus >= 201402L
@@ -122,7 +123,7 @@ RestClient::Response RestClient::put(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response RestClient::patch(const std::string& url,
+restclient_cppAPI RestClient::Response RestClient::patch(const std::string& url,
                                      const std::string& ctype,
                                      const std::string& data) {
   RestClient::Response ret;
@@ -140,7 +141,7 @@ RestClient::Response RestClient::patch(const std::string& url,
  *
  * @return response struct
  */
-RestClient::Response RestClient::del(const std::string& url) {
+restclient_cppAPI RestClient::Response RestClient::del(const std::string& url) {
 #if __cplusplus >= 201402L
   auto conn = std::make_unique<RestClient::Connection>("");
   return conn->del(url);
@@ -160,7 +161,7 @@ RestClient::Response RestClient::del(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response RestClient::head(const std::string& url) {
+restclient_cppAPI RestClient::Response RestClient::head(const std::string& url) {
 #if __cplusplus >= 201402L
   auto conn = std::make_unique<RestClient::Connection>("");
   return conn->head(url);
@@ -180,7 +181,7 @@ RestClient::Response RestClient::head(const std::string& url) {
  *
  * @return response struct
  */
-RestClient::Response RestClient::options(const std::string& url) {
+restclient_cppAPI RestClient::Response RestClient::options(const std::string& url) {
   RestClient::Response ret;
   RestClient::Connection *conn = new RestClient::Connection("");
   ret = conn->options(url);

@@ -9,6 +9,9 @@
 #ifndef INCLUDE_RESTCLIENT_CPP_HELPERS_H_
 #define INCLUDE_RESTCLIENT_CPP_HELPERS_H_
 
+#include "restclient-cpp/private/exportAPI.hpp"
+
+
 #include <string>
 #include <cctype>
 #include <algorithm>
@@ -38,14 +41,14 @@ namespace Helpers {
   } UploadObject;
 
   // writedata callback function
-  size_t write_callback(void *ptr, size_t size, size_t nmemb,
+  restclient_cppAPI size_t write_callback(void *ptr, size_t size, size_t nmemb,
                               void *userdata);
 
   // header callback function
-  size_t header_callback(void *ptr, size_t size, size_t nmemb,
+  restclient_cppAPI size_t header_callback(void *ptr, size_t size, size_t nmemb,
                                 void *userdata);
   // read callback function
-  size_t read_callback(void *ptr, size_t size, size_t nmemb,
+  restclient_cppAPI size_t read_callback(void *ptr, size_t size, size_t nmemb,
                               void *userdata);
 
   // trim from start

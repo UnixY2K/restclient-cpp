@@ -4,6 +4,7 @@
  * @author Daniel Schauenberg <d@unwiredcouch.com>
  */
 
+#define restclient_cppLIBRARY_EXPORT
 #include "restclient-cpp/helpers.h"
 
 #include <cstring>
@@ -20,7 +21,7 @@
  *
  * @return (size * nmemb)
  */
-size_t RestClient::Helpers::write_callback(void *data, size_t size,
+restclient_cppAPI size_t RestClient::Helpers::write_callback(void *data, size_t size,
                                            size_t nmemb, void *userdata) {
   RestClient::Response* r;
   r = reinterpret_cast<RestClient::Response*>(userdata);
@@ -38,7 +39,7 @@ size_t RestClient::Helpers::write_callback(void *data, size_t size,
  * @param userdata pointer to user data object to save headr data
  * @return size * nmemb;
  */
-size_t RestClient::Helpers::header_callback(void *data, size_t size,
+restclient_cppAPI size_t RestClient::Helpers::header_callback(void *data, size_t size,
                                             size_t nmemb, void *userdata) {
   RestClient::Response* r;
   r = reinterpret_cast<RestClient::Response*>(userdata);
@@ -72,7 +73,7 @@ size_t RestClient::Helpers::header_callback(void *data, size_t size,
  *
  * @return (size * nmemb)
  */
-size_t RestClient::Helpers::read_callback(void *data, size_t size,
+restclient_cppAPI size_t RestClient::Helpers::read_callback(void *data, size_t size,
                                           size_t nmemb, void *userdata) {
   /** get upload struct */
   RestClient::Helpers::UploadObject* u;
