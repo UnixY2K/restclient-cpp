@@ -1,7 +1,8 @@
+#include "nlohmann/json_fwd.hpp"
 #include "restclient-cpp/restclient.h"
 #include "restclient-cpp/connection.h"
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <string>
 
 class ConnectionTest : public ::testing::Test
@@ -53,26 +54,26 @@ TEST_F(ConnectionTest, TestFailForInvalidCA)
 TEST_F(ConnectionTest, TestDefaultUserAgent)
 {
   RestClient::Response res = conn->get("/get");
-  Json::Value root;
+  nlohmann::json root = nlohmann::json::parse(res.body);
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/get", root.get("url", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/get", root.value("url", "no url set"));
   EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION,
-      root["headers"].get("User-Agent", "nope/nope").asString());
+      root["headers"].value("User-Agent", "nope/nope"));
 }
 
 TEST_F(ConnectionTest, TestCustomUserAgent)
 {
   conn->SetUserAgent("foobar/1.2.3");
   RestClient::Response res = conn->get("/get");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/get", root.get("url", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/get", root.value("url", "no url set"));
   EXPECT_EQ("foobar/1.2.3 restclient-cpp/" RESTCLIENT_VERSION,
-      root["headers"].get("User-Agent", "nope/nope").asString());
+      root["headers"].value("User-Agent", "nope/nope"));
 }
 
 TEST_F(ConnectionTest, TestBasicAuth)
@@ -84,12 +85,12 @@ TEST_F(ConnectionTest, TestBasicAuth)
   res = conn->get("/basic-auth/foo/bar");
   EXPECT_EQ(200, res.code);
 
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("foo", root.get("user", "no user").asString());
-  EXPECT_EQ(true, root.get("authenticated", false).asBool());
+  EXPECT_EQ("foo", root.value("user", "no user"));
+  EXPECT_EQ(true, root.value("authenticated", false));
 
 }
 
@@ -113,11 +114,11 @@ TEST_F(ConnectionTest, TestSetHeaders)
   RestClient::Response res = conn->get("/headers");
   EXPECT_EQ(200, res.code);
 
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
-  EXPECT_EQ("bar", root["headers"].get("Foo", "").asString());
-  EXPECT_EQ("lol", root["headers"].get("Bla", "").asString());
+  EXPECT_EQ("bar", root["headers"].value("Foo", ""));
+  EXPECT_EQ("lol", root["headers"].value("Bla", ""));
 
   // let's replace the headers now
   RestClient::HeaderFields headers_again;
@@ -128,9 +129,9 @@ TEST_F(ConnectionTest, TestSetHeaders)
 
   std::istringstream str2(res.body);
   str2 >> root;
-  EXPECT_EQ("bob", root["headers"].get("Foo", "").asString());
+  EXPECT_EQ("bob", root["headers"].value("Foo", ""));
   // this shouldn't be set anymore
-  EXPECT_EQ("", root["headers"].get("Bla", "").asString());
+  EXPECT_EQ("", root["headers"].value("Bla", ""));
 }
 
 TEST_F(ConnectionTest, TestGetHeaders)
