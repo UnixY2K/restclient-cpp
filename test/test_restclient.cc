@@ -1,7 +1,8 @@
+#include "nlohmann/json_fwd.hpp"
 #include "restclient-cpp/restclient.h"
 #include <gtest/gtest.h>
-#include <json/json.h>
 #include <string>
+#include <nlohmann/json.hpp>
 
 class RestClientTest : public ::testing::Test
 {
@@ -38,12 +39,12 @@ TEST_F(RestClientTest, TestRestClientDELETECode)
 TEST_F(RestClientTest, TestRestClientDELETEBody)
 {
   RestClient::Response res = RestClient::del("https://httpbin.org/delete");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/delete", root.get("url", "no url set").asString());
-  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].get("User-Agent", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/delete", root.value("url", "no url set"));
+  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].value("User-Agent", "no url set"));
 }
 
 // check for failure
@@ -76,12 +77,12 @@ TEST_F(RestClientTest, TestRestClientGETHTTP2Code)
 TEST_F(RestClientTest, TestRestClientGETBodyCode)
 {
   RestClient::Response res = RestClient::get("https://httpbin.org/get");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/get", root.get("url", "no url set").asString());
-  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].get("User-Agent", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/get", root.value("url", "no url set"));
+  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].value("User-Agent", "no url set"));
 }
 
 // check for failure
@@ -110,12 +111,12 @@ TEST_F(RestClientTest, TestRestClientPOSTCode)
 TEST_F(RestClientTest, TestRestClientPOSTBody)
 {
   RestClient::Response res = RestClient::post("https://httpbin.org/post", "text/text", "data");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/post", root.get("url", "no url set").asString());
-  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].get("User-Agent", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/post", root.value("url", "no url set"));
+  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].value("User-Agent", "no url set"));
 }
 
 // check for failure
@@ -143,12 +144,12 @@ TEST_F(RestClientTest, TestRestClientPUTCode)
 TEST_F(RestClientTest, TestRestClientPUTBody)
 {
   RestClient::Response res = RestClient::put("https://httpbin.org/put", "text/text", "data");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/put", root.get("url", "no url set").asString());
-  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].get("User-Agent", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/put", root.value("url", "no url set"));
+  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].value("User-Agent", "no url set"));
 }
 
 // check for failure
@@ -176,12 +177,12 @@ TEST_F(RestClientTest, TestRestClientPATCHCode)
 TEST_F(RestClientTest, TestRestClientPATCHBody)
 {
   RestClient::Response res = RestClient::patch("https://httpbin.org/patch", "text/text", "data");
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("https://httpbin.org/patch", root.get("url", "no url set").asString());
-  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].get("User-Agent", "no url set").asString());
+  EXPECT_EQ("https://httpbin.org/patch", root.value("url", "no url set"));
+  EXPECT_EQ("restclient-cpp/" RESTCLIENT_VERSION, root["headers"].value("User-Agent", "no url set"));
 }
 
 // check for failure
@@ -226,12 +227,12 @@ TEST_F(RestClientTest, TestRestClientAuth)
   RestClient::Response res = RestClient::get("https://foo:bar@httpbin.org/basic-auth/foo/bar");
   EXPECT_EQ(200, res.code);
 
-  Json::Value root;
+  nlohmann::json root;
   std::istringstream str(res.body);
   str >> root;
 
-  EXPECT_EQ("foo", root.get("user", "no user").asString());
-  EXPECT_EQ(true, root.get("authenticated", false).asBool());
+  EXPECT_EQ("foo", root.value("user", "no user"));
+  EXPECT_EQ(true, root.value("authenticated", false));
 
   res = RestClient::get("https://httpbin.org/basic-auth/foo/bar");
   EXPECT_EQ(401, res.code);

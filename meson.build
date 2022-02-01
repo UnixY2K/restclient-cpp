@@ -5,7 +5,7 @@
 ### version:    0.5.2-meson                                     ###
 ### licence:    see accompanying LICENSE file [MIT]             ###
 ### copyright:  Jonathan Guzmán <jonguz5@hotmail.com>  2022.    ###
-### date:       31/01/2021                                      ###
+### date:       01/02/2021                                      ###
 ###                                                             ###
 ###################################################################
 
@@ -35,11 +35,11 @@ if get_option('build_tests')
                     'gtest',
                     fallback: ['gtest', 'gtest_dep']
     )
-    ### - jsoncpp
-    jsoncpp_dep = dependency(
-                    'jsoncpp',
-                    fallback: ['jsoncpp', 'jsoncpp_dep'],
-                    required: false)
+    ### Nlohmann Json
+    nlohmann_json_dep = dependency(
+                    'nlohmann_json',
+                    fallback: ['nlohmann_json', 'nlohmann_json_dep']
+    )
 else
     message('[restclient-cpp] Skipping tests dependencies')
 endif
